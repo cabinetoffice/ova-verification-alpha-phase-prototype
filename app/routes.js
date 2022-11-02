@@ -55,13 +55,24 @@ Issuer.discover(process.env.ISSUER_BASE_URL).then(issuer => {
   router.use(passport.initialize())
   router.use(passport.session())
 
+  const vtr = ["P2.Cl.Cm"] // https://govukverify.atlassian.net/browse/AUT-771
+  const claims = {
+    userinfo: {
+      "https://vocab.account.gov.uk/v1/coreIdentityJWT": {
+          essential: true
+      }
+    }
+  }
+
   passport.use(
     'oidc',
     new Strategy({
       client,
       params: {
         scope: 'openid email phone',
-        nonce: generators.nonce()
+        nonce: generators.nonce(),
+        vtr: JSON.stringify(vtr),
+        claims: JSON.stringify(claims),
       },
       passReqToCallback: true,
       sessionKey: 'data'
