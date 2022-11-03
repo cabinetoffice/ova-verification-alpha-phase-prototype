@@ -14,10 +14,35 @@
     <div class="govuk-grid-column-two-thirds">
 
       <h1 class="govuk-heading-xl">
-        You are logged in as {{ user.email }}
+        Identity verified
       </h1>
 
       <dl class="govuk-summary-list">
+        {% for n in user.core_identity.vc.credentialSubject.name %}
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key govuk-!-width-one-third">
+            Name
+          </dt>
+          <dd class="govuk-summary-list__value">
+            {% for p in n.nameParts %}
+              {{ p.value }}
+            {% endfor %}
+            {% if n.validUntil %}
+              (until {{ n.validUntil }})
+            {% endif %}
+          </dd>
+        </div>
+        {% endfor %}
+
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key govuk-!-width-one-third">
+            Date of birth
+          </dt>
+          <dd class="govuk-summary-list__value">
+            {{ user.core_identity.vc.credentialSubject.birthDate.value }}
+          </dd>
+        </div>
+
         <div class="govuk-summary-list__row">
           <dt class="govuk-summary-list__key govuk-!-width-one-third">
             Email

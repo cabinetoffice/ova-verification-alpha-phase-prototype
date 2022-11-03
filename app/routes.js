@@ -8,6 +8,9 @@ const { Issuer, Strategy, generators, custom } = require('openid-client')
 const rsaPemToJwk = require('rsa-pem-to-jwk')
 const { v4: uuidv4 } = require('uuid')
 const validator = require('validator')
+const jwt = require('jsonwebtoken')
+const credential_issuer = (typeof process.env.CREDENTIAL_ISSUER_URL === undefined) ?
+  process.env.CREDENTIAL_ISSUER_URL : "https://identity.integration.account.gov.uk/"
 
 const {
   // These are needed when we are NOT using Identity Proofing and Verification
@@ -77,14 +80,31 @@ Issuer.discover(process.env.ISSUER_BASE_URL).then(issuer => {
       passReqToCallback: true,
       sessionKey: 'data'
     }, (req, tokenset, userinfo, done) => {
-      /* TODO: Perform some checks */
 
-      if (userinfo.sub) {
-        console.log('sub: ', userinfo.sub, ' logged in')
-        return done(null, userinfo)
-      } else {
-        return done('Userinfo not found. Check the logs.')
+      const core_id_jwt = userinfo["https://vocab.account.gov.uk/v1/coreIdentityJWT"]
+
+      if (!core_id_jwt) {
+        // I doubt this is necessary. We said this claim was 'essential'
+        let errorstring = 'coreIdentityJWT not present.'
+        console.log(errorstring)
+        return done(`${errorstring}. This means we could not prove your identity.`)
       }
+
+      const verification_options = {
+        algorithms: ["ES256"],
+        issuer: credential_issuer,
+        subject: userinfo.sub,
+      }
+      const pubkey = process.env.SPOT_PUBLIC_KEY
+
+      jwt.verify(core_id_jwt, pubkey, verification_options, (err, decoded) => {
+          if (err) {
+            return done(`Could not validate coreIdentityJWT: ${err}`)
+          } else {
+            userinfo.core_identity = decoded // so the "profile" page can parse it
+            return done(null, userinfo)
+          }
+        })
     })
   )
 
