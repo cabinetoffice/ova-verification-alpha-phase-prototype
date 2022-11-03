@@ -9,7 +9,7 @@ const rsaPemToJwk = require('rsa-pem-to-jwk')
 const { v4: uuidv4 } = require('uuid')
 const validator = require('validator')
 const jwt = require('jsonwebtoken')
-const credential_issuer = (typeof process.env.CREDENTIAL_ISSUER_URL === undefined) ?
+const credential_issuer = (typeof process.env.CREDENTIAL_ISSUER_URL === 'undefined') ?
   "https://identity.integration.account.gov.uk/" : process.env.CREDENTIAL_ISSUER_URL
 
 const {
