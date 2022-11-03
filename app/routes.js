@@ -10,7 +10,7 @@ const { v4: uuidv4 } = require('uuid')
 const validator = require('validator')
 const jwt = require('jsonwebtoken')
 const credential_issuer = (typeof process.env.CREDENTIAL_ISSUER_URL === undefined) ?
-  process.env.CREDENTIAL_ISSUER_URL : "https://identity.integration.account.gov.uk/"
+  "https://identity.integration.account.gov.uk/" : process.env.CREDENTIAL_ISSUER_URL
 
 const {
   // These are needed when we are NOT using Identity Proofing and Verification
