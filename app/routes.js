@@ -98,13 +98,13 @@ Issuer.discover(process.env.ISSUER_BASE_URL).then(issuer => {
       const pubkey = process.env.SPOT_PUBLIC_KEY
 
       jwt.verify(core_id_jwt, pubkey, verification_options, (err, decoded) => {
-          if (err) {
-            return done(`Could not validate coreIdentityJWT: ${err}`)
-          } else {
-            userinfo.core_identity = decoded // so the "profile" page can parse it
-            return done(null, userinfo)
-          }
-        })
+        if (err) {
+          return done(`Could not validate coreIdentityJWT: ${err}`)
+        } else {
+          userinfo.core_identity = decoded // so the "profile" page can parse it
+          return done(null, userinfo)
+        }
+      })
     })
   )
 
