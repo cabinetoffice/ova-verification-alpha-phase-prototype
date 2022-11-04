@@ -118,7 +118,7 @@ Issuer.discover(process.env.ISSUER_BASE_URL).then(issuer => {
     passport.authenticate('oidc', {
       successRedirect: '/profile',
       successMessage: true,
-      failureRedirect: '/login', /* this may go loopy */
+      failureRedirect: '/ipv_fail',
       failureMessage: true
     })(req, res, next)
   })
