@@ -1,3 +1,5 @@
+const utils = require('../lib/utils.js')
+const env = utils.getNodeEnv()
 const NotifyClient = require('notifications-node-client').NotifyClient
 const notify = new NotifyClient(process.env.NOTIFYAPIKEY)
 const express = require('express')
@@ -122,7 +124,18 @@ Issuer.discover(process.env.ISSUER_BASE_URL).then(issuer => {
   })
 
   router.use((req, res, next) => {
-    res.locals.user = req.user
+    if (env === "development") {
+      res.locals.user = {
+        sub: "urn:fdc:gov.uk:2022:56P4CMsGh_02YOlWpd8PAOI-2sVlB2nsNU7mcLZYhYw=",
+        email: "sandy@example.com",
+        email_verified: true,
+        phone_number: "+447700900451",
+        phone_number_verified: true,
+      }
+      res.locals.user.core_identity = getFakeDIClaimResponse('1975')
+    } else {
+      res.locals.user = req.user
+    }
     next()
   })
 
