@@ -743,7 +743,37 @@ router.post('/vetcard_account_summary_choice', async function (req, res) {
   }
 
   if (idChoice === 'Physical card') {
-    notify
+    // Fake post to vetereanid-matching-service
+    const national_insurance_number = req.session.data.national_insurance_number
+    const names = fullName.toString().split(" ");
+    const data = {
+      "unique_id": 1,
+      "forename": names[0],
+      "surname": names[1],
+      "date_of_birth": "10-Mar-77",
+      "service_no": serviceNumber,
+      "ni_no": national_insurance_number
+    }
+
+    const axios = require('axios')
+    const response = await axios(
+      {
+        method: 'post',
+        url: 'http://veteranid-matching-service:5000/match',
+        responseType: 'application/json',
+        data: data
+      }
+    )
+    console.log(data)
+    console.log(response.data)
+    console.log(req.session.data)
+    const probability = JSON.parse(response.data)[0].match_probability
+    console.log(probability)
+    if (probability < 0.95) {
+      res.redirect('/vetcard_match_fail_explanation')
+    } else {
+      res.redirect('/vetcard_application_complete_card_only')
+      notify
       .sendEmail(
         process.env.TEST_EMAIL_CARD_ONLY_TEMPLATE,
         // `emailAddress` here needs to match the name of the form field in
@@ -756,27 +786,7 @@ router.post('/vetcard_account_summary_choice', async function (req, res) {
       )
       .then((response) => console.log(response))
       .catch((err) => console.error(err.response.data))
-
-    // Fake post to vetereanid-matching-service
-    const axios = require('axios')
-    const response = await axios(
-      {
-        method: 'post',
-        url: 'http://veteranid-matching-service:5000/match',
-        responseType: 'application/json',
-        data: {
-          "unique_id": 1,
-          "forename": "Kenneth",
-          "surname": "Decerqueira",
-          "date_of_birth": "23-Aug-59",
-          "service_no": 25054899,
-          "ni_no": "KD798595C"
-        }
-      }
-    )
-    console.log(response.data)
-
-    res.redirect('/vetcard_application_complete_card_only')
+    }
   }
 
   if (idChoice === 'Digital card') {
