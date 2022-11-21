@@ -34,6 +34,7 @@ const { regexUkPostcode } = require('./assets/javascripts/regexUkPostcodes')
 const {
   removeStringWhiteSpace
 } = require('./assets/javascripts/removeStringWhiteSpace')
+const { default: axios } = require('axios')
 
 const rsa_private_key = process.env.RSA_PRIVATE_KEY
 const jwk = rsaPemToJwk(rsa_private_key, { kid: '2022-06-ova-alpha', use: 'sig' }, 'private')
@@ -702,7 +703,7 @@ router.post('/question_phone_number_update_input', function (req, res) {
   }
 })
 
-router.post('/vetcard_account_summary_choice', function (req, res) {
+router.post('/vetcard_account_summary_choice', async function (req, res) {
   let idChoice = req.session.data.id_choice
   const fullName = req.session.data.full_name
   const postalAddress = req.session.data.postal_address
@@ -755,6 +756,25 @@ router.post('/vetcard_account_summary_choice', function (req, res) {
       )
       .then((response) => console.log(response))
       .catch((err) => console.error(err.response.data))
+
+    // Fake post to vetereanid-matching-service
+    const axios = require('axios')
+    const response = await axios(
+      {
+        method: 'post',
+        url: 'http://veteranid-matching-service:5000/match',
+        responseType: 'application/json',
+        data: {
+          "unique_id": 1,
+          "forename": "Kenneth",
+          "surname": "Decerqueira",
+          "date_of_birth": "23-Aug-59",
+          "service_no": 25054899,
+          "ni_no": "KD798595C"
+        }
+      }
+    )
+    console.log(response.data)
 
     res.redirect('/vetcard_application_complete_card_only')
   }

@@ -51,3 +51,9 @@ docker run -p 127.0.0.1:3000:3000/tcp -t veteranid-verify
 ```shell
 docker exec -it $(docker container ls  | grep 'veteranid-verify' | awk '{print $1}') bash
 ```
+
+## Inspecting docker logs
+
+```shell
+docker logs $(docker container ls  | grep 'veteranid-verify' | awk '{print $1}')
+```
