@@ -772,7 +772,6 @@ router.post('/vetcard_account_summary_choice', async function (req, res) {
     if (probability < 0.95) {
       res.redirect('/vetcard_match_fail_explanation')
     } else {
-      res.redirect('/vetcard_application_complete_card_only')
       notify
       .sendEmail(
         process.env.TEST_EMAIL_CARD_ONLY_TEMPLATE,
@@ -786,6 +785,8 @@ router.post('/vetcard_account_summary_choice', async function (req, res) {
       )
       .then((response) => console.log(response))
       .catch((err) => console.error(err.response.data))
+      
+      res.redirect('/vetcard_application_complete_card_only')
     }
   }
 
