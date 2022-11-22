@@ -14,16 +14,18 @@ This is the Alpha phase prototype of the Office for Veterans' Affairs (OVA)
 
 The environment variables you need are:
 
-- `NOTIFYAPIKEY`: An API key for [GOV.UK Notify](https://www.notifications.service.gov.uk/)
-- `TEST_EMAIL_CARD_AND_DIGITAL_TEMPLATE`: A template ID from GOV.UK Notify
-- `TEST_EMAIL_CARD_ONLY_TEMPLATE`: A template ID from GOV.UK Notify
-- `TEST_EMAIL_DIGITAL_ONLY_TEMPLATE`: A template ID from GOV.UK Notify
-- `TEST_EMAIL_UNHAPPY_PATH_TEMPLATE`: A template ID from GOV.UK Notify
-- `ISSUER_BASE_URL`=https://oidc.integration.account.gov.uk
-- `CLIENT_ID`=<CLIENT_ID> # Replace these values
-- `CALLBACK_URL`=https://ova-alpha.london.cloudapps.digital/callback
-- `CERT`="<CERT> # Replace these values"
-- `RSA_PRIVATE_KEY`="<RSA_PRIVATE_KEY>" # Replace these values
+```properties
+NOTIFYAPIKEY: An API key for [GOV.UK Notify](https://www.notifications.service.gov.uk/)
+TEST_EMAIL_CARD_AND_DIGITAL_TEMPLATE: A template ID from GOV.UK Notify
+TEST_EMAIL_CARD_ONLY_TEMPLATE: A template ID from GOV.UK Notify
+TEST_EMAIL_DIGITAL_ONLY_TEMPLATE: A template ID from GOV.UK Notify
+TEST_EMAIL_UNHAPPY_PATH_TEMPLATE: A template ID from GOV.UK Notify
+ISSUER_BASE_URL=https://oidc.integration.account.gov.uk
+CLIENT_ID=<CLIENT_ID> # Replace these values
+CALLBACK_URL=https://ova-alpha.london.cloudapps.digital/callback
+CERT="<CERT> # Replace these values"
+RSA_PRIVATE_KEY="<RSA_PRIVATE_KEY>" # Replace these values
+```
 
 The template IDs should correspond to email templates we've set up in our Notify acccount.
 If you're just developing locally, you don't need the template IDs.  But the service will
