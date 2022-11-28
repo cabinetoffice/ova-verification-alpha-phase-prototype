@@ -1,5 +1,6 @@
 const { Strategy, generators } = require('openid-client')
 const { getFakeDIClaimResponse } = require('./fakeDIClaimJWT')
+const jwt = require('jsonwebtoken')
 
 function validateClaims (req, tokenset, userinfo, done) {
 

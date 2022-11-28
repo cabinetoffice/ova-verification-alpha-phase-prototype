@@ -10,7 +10,6 @@ const { Issuer, custom } = require('openid-client')
 const rsaPemToJwk = require('rsa-pem-to-jwk')
 const { v4: uuidv4 } = require('uuid')
 const validator = require('validator')
-const jwt = require('jsonwebtoken')
 
 const {
   // These are needed when we are NOT using Identity Proofing and Verification
@@ -478,7 +477,7 @@ Issuer.discover(process.env.ISSUER_BASE_URL).then(issuer => {
         res.locals.user.email
 
       req.session.data.comms_preference_phone_number = removeStringWhiteSpace(
-        req.session.data.phone_number.toString()
+        res.locals.user.phone_number.toString()
       )
 
       res.redirect('/vetcard_account_summary_extra')
@@ -591,7 +590,7 @@ Issuer.discover(process.env.ISSUER_BASE_URL).then(issuer => {
 
     if (phoneNumberChoice === 'Yes') {
       req.session.data.comms_preference_phone_number = removeStringWhiteSpace(
-        req.session.data.phone_number.toString()
+        res.locals.user.phone_number.toString()
       )
       res.redirect('/vetcard_account_summary_extra')
     }

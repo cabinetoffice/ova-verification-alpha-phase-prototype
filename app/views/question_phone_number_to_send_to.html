@@ -9,19 +9,19 @@ your <a class="govuk-link" href="#">feedback</a> will help us to improve it.'})
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
   <h1 class="govuk-heading-l">Is this the phone number you want text updates sent to?</h1>
-  
-  <p>{{data["phone_number"]}}</p>
- 
+
+  <p>{{ user.phone_number }}</p>
+
     <form class="form" action="question_phone_number_to_send_to_choice" method="post">
-     
+
       {{
-      govukRadios({ 
-      idPrefix: "phone_number_choice", 
+      govukRadios({
+      idPrefix: "phone_number_choice",
       name: "phone_number_choice",
-      fieldset: { legend: { text: "", 
-      isPageHeading: false, 
+      fieldset: { legend: { text: "",
+      isPageHeading: false,
       classes: "govuk-fieldset__legend--l"
-      } }, 
+      } },
       items: [
           {
             value: "Yes",
@@ -33,7 +33,7 @@ your <a class="govuk-link" href="#">feedback</a> will help us to improve it.'})
             text: "No",
             checked: checked("phone_number_choice", "No")
           }
-        ], 
+        ],
       errorMessage: error }) }}
 
       <button class="govuk-button" id="btn" data-module="govuk-button">
