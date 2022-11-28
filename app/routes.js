@@ -10,7 +10,6 @@ const { Issuer, custom } = require('openid-client')
 const rsaPemToJwk = require('rsa-pem-to-jwk')
 const { v4: uuidv4 } = require('uuid')
 const validator = require('validator')
-const jwt = require('jsonwebtoken')
 
 const {
   // These are needed when we are NOT using Identity Proofing and Verification
