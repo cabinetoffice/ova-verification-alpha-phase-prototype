@@ -478,7 +478,7 @@ Issuer.discover(process.env.ISSUER_BASE_URL).then(issuer => {
         res.locals.user.email
 
       req.session.data.comms_preference_phone_number = removeStringWhiteSpace(
-        req.session.data.phone_number.toString()
+        res.locals.user.phone_number.toString()
       )
 
       res.redirect('/vetcard_account_summary_extra')
@@ -591,7 +591,7 @@ Issuer.discover(process.env.ISSUER_BASE_URL).then(issuer => {
 
     if (phoneNumberChoice === 'Yes') {
       req.session.data.comms_preference_phone_number = removeStringWhiteSpace(
-        req.session.data.phone_number.toString()
+        res.locals.user.phone_number.toString()
       )
       res.redirect('/vetcard_account_summary_extra')
     }
