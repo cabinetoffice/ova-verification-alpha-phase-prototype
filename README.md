@@ -30,3 +30,5 @@ You can [read more about using GOV.UK Notify to prototype emails and text messag
 
 Changes merged into the `main` branch will automatically be deployed to GOV.UK PaaS.  You
 can access the prototype at https://ova-alpha.london.cloudapps.digital/
+
+** This is now frozen in time as if it were October 27th 2022 **
